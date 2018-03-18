@@ -1,0 +1,5 @@
+# Exclude build dirctory
+/build/**
+
+# Exclude all compiled objects
+**/*.o
