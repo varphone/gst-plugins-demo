@@ -3,3 +3,17 @@
 
 # Exclude all compiled objects
 **/*.o
+
+# Exclude cmake files
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# Exclude build binaries
+**/libgstdemo.so
