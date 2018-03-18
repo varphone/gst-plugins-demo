@@ -205,6 +205,22 @@ static void gst_testsrc_get_property(GObject* object, guint prop_id,
 	}
 }
 
+static GstCaps* gst_testsrc_get_caps(GstTestSrc* src)
+{
+	GstCaps* caps;
+	/* clang-format off */
+	caps = gst_caps_new_simple("video/x-raw",
+			"format", G_TYPE_STRING, "BGRx",
+			"framerate", GST_TYPE_FRACTION, 25, 1,
+			"pixel-aspect-ratio", GST_TYPE_FRACTION, 1, 1,
+			"width", G_TYPE_INT, 1280,
+			"height", G_TYPE_INT, 720,
+			"interlace-mode", G_TYPE_STRING, "progressive",
+			NULL);
+	/* clang-format on */
+	return caps;
+}
+
 /* GstElement vmethod implementations */
 static gboolean gst_testsrc_src_send_stream_start(GstTestSrc* src)
 {
@@ -220,8 +236,11 @@ static gboolean gst_testsrc_src_send_stream_start(GstTestSrc* src)
 		GST_DEBUG_OBJECT(src, "Pushing STREAM_START");
 		event = gst_event_new_stream_start(stream_id);
 		gst_event_set_group_id(event, gst_util_group_id_next());
-
 		ret = gst_pad_push_event(src->srcpad, event);
+
+		event = gst_event_new_caps(gst_testsrc_get_caps(src));
+		ret = gst_pad_push_event(src->srcpad, event);
+
 		src->priv->stream_start_pending = FALSE;
 		g_free(stream_id);
 	}
