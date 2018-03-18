@@ -295,6 +295,9 @@ static gboolean gst_testsrc_set_playing(GstTestSrc* src, gboolean playing)
 		                   src->srcpad, NULL);
 #endif
 	}
+	else {
+		gst_pad_stop_task(src->srcpad);
+	}
 	return TRUE;
 }
 
