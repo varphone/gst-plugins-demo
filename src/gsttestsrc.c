@@ -282,15 +282,18 @@ static gboolean gst_testsrc_set_playing(GstTestSrc* src, gboolean playing)
 	GST_LOG_OBJECT(src, "set_playing %d", playing);
 
 	if (playing) {
+#if 0
 		GstClock* clk = GST_ELEMENT_CLOCK(src);
 		GstClockTime start = gst_clock_get_time(clk);
 		src->clock_id =
 		        gst_clock_new_periodic_id(clk, start, GST_SECOND / 25);
 		gst_clock_id_wait_async(src->clock_id, gst_testsrc_push_frame,
 		                        src, NULL);
-		// gst_pad_start_task(src->srcpad,
-		//                   (GstTaskFunction)gst_testsrc_src_loop,
-		//                   src->srcpad, NULL);
+#else
+		gst_pad_start_task(src->srcpad,
+		                   (GstTaskFunction)gst_testsrc_src_loop,
+		                   src->srcpad, NULL);
+#endif
 	}
 	return TRUE;
 }
